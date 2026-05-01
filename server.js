@@ -4,6 +4,7 @@ require('dotenv').config();
 const db = require('./config/db');
 
 const app = express();
+app.set('trust proxy', 1);
 
 const session = require('express-session');
 const passport = require('passport');
