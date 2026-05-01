@@ -69,7 +69,10 @@ router.get(
         if (err) throw err;
         
         // Redirect to frontend with token in query param
-        const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5001/pages/login.html';
+        // Use dynamically determined origin to avoid localhost issues in production
+        const protocol = req.protocol;
+        const host = req.get('host');
+        const frontendURL = process.env.FRONTEND_URL || `${protocol}://${host}/pages/login.html`;
         res.redirect(`${frontendURL}?token=${token}`);
       }
     );
