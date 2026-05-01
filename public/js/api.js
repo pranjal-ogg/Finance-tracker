@@ -1,6 +1,9 @@
-const BASE_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:5001/api' 
-  : 'https://finance-tracker-xp0c.onrender.com/api';
+const ROOT_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? `http://${window.location.hostname}:${window.location.port || '5001'}`
+  : 'https://finance-tracker-xp0c.onrender.com';
+
+const BASE_URL = `${ROOT_URL}/api`;
+window.ROOT_URL = ROOT_URL; // Expose for receipt links
 
 const request = async (endpoint, options = {}) => {
   const token = localStorage.getItem('pft_token');

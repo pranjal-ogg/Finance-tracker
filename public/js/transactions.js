@@ -49,7 +49,7 @@ const loadTransactions = async () => {
     txns.forEach(t => {
       const isIncome = t.type === 'income';
       const receiptLink = t.receipt_url
-        ? `<a href="http://localhost:5001/${t.receipt_url}" target="_blank" title="View receipt">📎</a>`
+        ? `<a href="${window.ROOT_URL}/${t.receipt_url}" target="_blank" title="View receipt">📎</a>`
         : '—';
       html += `<tr>
         <td class="text-muted">${formatDate(t.date)}</td>
