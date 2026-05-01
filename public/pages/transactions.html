@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transactions - FinTrack</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; }
+    .filter-bar .form-group { margin-bottom: 0; min-width: 140px; flex: 1; }
+    .filter-bar .btn { height: 44px; }
+    .action-btn { background: none; border: none; cursor: pointer; padding: 0.25rem 0.5rem; border-radius: 4px; transition: background 0.2s; font-size: 1rem; }
+    .action-btn:hover { background: var(--bg); }
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+    .file-preview { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .radio-group { display: flex; gap: 1.5rem; }
+    .radio-group label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 500; }
+    .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+    .empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <header class="top-header">
+        <div class="d-flex align-center gap-2">
+          <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
+          <h2 style="font-size: 1.25rem;">Transactions</h2>
+        </div>
+        <button class="btn btn-primary" id="addTransactionBtn">
+          <i class="fa-solid fa-plus"></i> Add Transaction
+        </button>
+      </header>
+
+      <div class="content-area">
+        <!-- Filter Bar -->
+        <div class="card mb-3">
+          <div class="filter-bar">
+            <div class="form-group">
+              <label class="form-label">Type</label>
+              <select id="filterType" class="form-control">
+                <option value="">All</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select id="filterCategory" class="form-control">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Start Date</label>
+              <input type="date" id="filterStartDate" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">End Date</label>
+              <input type="date" id="filterEndDate" class="form-control">
+            </div>
+            <button class="btn btn-primary" id="applyFiltersBtn"><i class="fa-solid fa-filter"></i> Apply</button>
+            <button class="btn btn-outline" id="resetFiltersBtn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card">
+          <div class="card-header">
+            <span id="resultsCount" class="text-muted" style="font-size: 0.875rem;">Loading...</span>
+          </div>
+          <div class="table-container" id="transactionsTableContainer">
+            <div class="skeleton skeleton-row" style="margin-bottom:10px;"></div>
+            <div class="skeleton skeleton-row" style="margin-bottom:10px;"></div>
+            <div class="skeleton skeleton-row"></div>
+          </div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal-overlay" id="txnModal">
+    <div class="modal" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add Transaction</h3>
+        <button class="close-modal" id="closeTxnModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="txnForm">
+          <div class="form-group">
+            <label class="form-label">Type</label>
+            <div class="radio-group">
+              <label><input type="radio" name="type" value="income" id="typeIncome" checked> <span class="text-success">💚 Income</span></label>
+              <label><input type="radio" name="type" value="expense" id="typeExpense"> <span class="text-danger">🔴 Expense</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="txnCategory" class="form-control" required></select>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Amount</label>
+              <input type="number" id="txnAmount" class="form-control" step="0.01" required placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Currency</label>
+              <select id="txnCurrency" class="form-control">
+                <option value="INR">INR</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+                <option value="AUD">AUD</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input type="date" id="txnDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <input type="text" id="txnDescription" class="form-control" placeholder="What was this for?">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Receipt <span class="text-muted">(jpg/png/pdf, max 5MB)</span></label>
+            <input type="file" id="txnReceipt" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
+            <div class="file-preview" id="filePreview"></div>
+          </div>
+          <input type="hidden" id="txnId">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelTxnBtn">Cancel</button>
+        <button class="btn btn-primary" id="saveTxnBtn">Save Transaction</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/transactions.js"></script>
+</body>
+</html>

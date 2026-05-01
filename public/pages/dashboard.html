@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - FinTrack</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <div class="app-container">
+    <main class="main-content">
+      <header class="top-header">
+        <div class="d-flex align-center gap-2">
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h2 style="font-size: 1.25rem;">Dashboard</h2>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <!-- Row 1: Summary Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;" id="summaryCards">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <!-- Row 2: Charts -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <div class="card">
+            <h3 class="card-title mb-3">Expenses by Category</h3>
+            <div style="height: 250px; position: relative;">
+              <canvas id="expensesChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title mb-3">Income vs Expenses (6 Months)</h3>
+            <div style="height: 250px; position: relative;">
+              <canvas id="trendChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Panels -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+          <div class="card">
+            <h3 class="card-title mb-3">Recent Transactions</h3>
+            <div class="table-container" id="recentTransactions">
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title mb-3">Budget Progress</h3>
+            <div id="budgetProgress">
+              <div class="skeleton skeleton-row"></div>
+              <div class="skeleton skeleton-row"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>

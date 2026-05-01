@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - FinTrack</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .auth-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--bg); padding: 1rem; }
+    .auth-card { width: 100%; max-width: 420px; padding: 2.5rem 2rem; background: linear-gradient(145deg, #ffffff, #fdfdfd); }
+    .auth-header { text-align: center; margin-bottom: 2rem; }
+    .auth-header h2 { font-size: 1.5rem; color: var(--text); }
+    .google-btn { width: 100%; background-color: white; color: #757575; border: 1px solid #ddd; padding: 0.75rem; border-radius: 6px; font-weight: 500; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 1rem; text-decoration: none; transition: background-color 0.2s; }
+    .google-btn:hover { background-color: #f5f5f5; }
+    .divider { display: flex; align-items: center; text-align: center; margin: 1.5rem 0; color: var(--muted); font-size: 0.875rem; }
+    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border); }
+    .divider span { padding: 0 10px; }
+    .auth-footer { text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--muted); }
+    .auth-footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="card auth-card">
+      <div class="auth-header">
+        <h2>💰 FinTrack</h2>
+        <p class="text-muted" style="margin-top: 0.5rem; font-size: 0.875rem;">Login to manage your finances</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" required placeholder="you@example.com">
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label class="form-label">Password</label>
+          <input type="password" id="password" class="form-control" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; height: 45px;">Login</button>
+      </form>
+
+      <div class="divider"><span>OR</span></div>
+
+      <a href="http://localhost:5001/api/auth/google" class="google-btn">
+        <img src="https://img.icons8.com/color/18/000000/google-logo.png" alt="Google Logo">
+        Continue with Google
+      </a>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

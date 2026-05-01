@@ -1,0 +1,70 @@
+# Entity Relationship Diagram (ERD)
+
+This diagram illustrates the database structure for the Personal Finance Tracker.
+
+```mermaid
+erDiagram
+    USERS ||--o{ CATEGORIES : "owns"
+    USERS ||--o{ TRANSACTIONS : "records"
+    USERS ||--o{ BUDGETS : "sets"
+    USERS ||--o{ NOTIFICATIONS : "receives"
+    
+    CATEGORIES ||--o{ TRANSACTIONS : "classifies"
+    CATEGORIES ||--o{ BUDGETS : "monitored_by"
+
+    USERS {
+        int id PK
+        string name
+        string email UK
+        string password_hash
+        string google_id UK
+        string preferred_currency
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    CATEGORIES {
+        int id PK
+        int user_id FK
+        string name
+        string type "income|expense"
+        timestamp created_at
+    }
+
+    TRANSACTIONS {
+        int id PK
+        int user_id FK
+        int category_id FK
+        numeric amount
+        string currency
+        text description
+        date date
+        string receipt_url
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    BUDGETS {
+        int id PK
+        int user_id FK
+        int category_id FK
+        numeric limit_amount
+        date month
+        timestamp created_at
+    }
+
+    NOTIFICATIONS {
+        int id PK
+        int user_id FK
+        text message
+        boolean is_read
+        timestamp created_at
+    }
+```
+
+## Key Relationships
+
+1.  **Users & Categories**: Each user has their own set of categories (Income/Expense). Default categories are seeded upon registration.
+2.  **Categories & Transactions**: Every transaction is linked to a category. If a category is deleted, the transaction's `category_id` is set to NULL to preserve financial history.
+3.  **Categories & Budgets**: Budgets are set specifically for a category and a month. A user can only have one budget per category per month.
+4.  **Users & Notifications**: Notifications are user-specific alerts, such as budget threshold warnings.

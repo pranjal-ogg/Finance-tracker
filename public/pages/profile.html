@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - FinTrack</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .cat-tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 1rem; }
+    .cat-tab { background: none; border: none; padding: 0.75rem 1.5rem; font-weight: 600; font-size: 0.875rem; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+    .cat-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .cat-content { display: none; }
+    .cat-content.active { display: block; }
+    .toggle-switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border); transition: .3s; border-radius: 26px; }
+    .toggle-slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .toggle-slider { background-color: var(--primary); }
+    input:checked + .toggle-slider:before { transform: translateX(22px); }
+    .pref-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .pref-row:last-child { border-bottom: none; }
+    .danger-zone { border: 2px solid var(--danger); opacity: 0.7; }
+    .inline-edit { display: flex; gap: 0.5rem; align-items: center; }
+    @media (max-width: 768px) { .profile-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <header class="top-header">
+        <div class="d-flex align-center gap-2">
+          <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
+          <h2 style="font-size: 1.25rem;">Profile</h2>
+        </div>
+      </header>
+      <div class="content-area">
+        <div class="profile-grid">
+          <!-- Left Column -->
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <!-- Profile Info Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Profile Info</h3>
+                <button class="btn btn-outline" id="editProfileBtn"><i class="fa-solid fa-pen"></i> Edit</button>
+              </div>
+              <div id="profileView">
+                <div class="skeleton skeleton-row mb-2"></div>
+                <div class="skeleton skeleton-row mb-2"></div>
+                <div class="skeleton skeleton-row"></div>
+              </div>
+              <form id="profileForm" style="display:none;">
+                <div class="form-group">
+                  <label class="form-label">Name</label>
+                  <input type="text" id="profileName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Preferred Currency</label>
+                  <select id="profileCurrency" class="form-control">
+                    <option value="INR">INR - Indian Rupee</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="GBP">GBP - British Pound</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                    <option value="AUD">AUD - Australian Dollar</option>
+                  </select>
+                </div>
+                <div class="d-flex gap-1">
+                  <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
+                  <button type="button" class="btn btn-outline" id="cancelEditBtn">Cancel</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Notification Preferences -->
+            <div class="card">
+              <h3 class="card-title mb-3">Notification Preferences</h3>
+              <div class="pref-row">
+                <div>
+                  <div class="font-weight-500">Budget Alerts</div>
+                  <div class="text-muted" style="font-size:0.8rem;">Get notified when budgets are exceeded</div>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" id="prefBudgetAlerts"><span class="toggle-slider"></span></label>
+              </div>
+              <div class="pref-row">
+                <div>
+                  <div class="font-weight-500">Weekly Summary Email</div>
+                  <div class="text-muted" style="font-size:0.8rem;">Receive weekly spending summaries</div>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" id="prefWeeklySummary"><span class="toggle-slider"></span></label>
+              </div>
+              <div class="pref-row">
+                <div>
+                  <div class="font-weight-500">Transaction Confirmations</div>
+                  <div class="text-muted" style="font-size:0.8rem;">Email after each transaction</div>
+                </div>
+                <label class="toggle-switch"><input type="checkbox" id="prefTxnConfirmations"><span class="toggle-slider"></span></label>
+              </div>
+              <button class="btn btn-primary mt-2" id="savePrefsBtn" style="width:100%;"><i class="fa-solid fa-floppy-disk"></i> Save Preferences</button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="card danger-zone">
+              <h3 class="card-title text-danger mb-2">⚠️ Danger Zone</h3>
+              <p class="text-muted mb-2" style="font-size:0.875rem;">Permanently delete your account and all data.</p>
+              <div title="Contact support to delete your account">
+                <button class="btn btn-danger" disabled style="opacity: 0.5; cursor: not-allowed; width: 100%;">Delete Account</button>
+              </div>
+              <p class="text-muted mt-2" style="font-size:0.75rem; text-align:center;">Contact support to delete your account.</p>
+            </div>
+          </div>
+
+          <!-- Right Column: Categories -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Categories</h3>
+              <button class="btn btn-primary" id="addCategoryBtn"><i class="fa-solid fa-plus"></i> Add</button>
+            </div>
+            <div class="cat-tabs">
+              <button class="cat-tab active" data-cat="income">💚 Income</button>
+              <button class="cat-tab" data-cat="expense">🔴 Expense</button>
+            </div>
+            <div class="cat-content active" id="cat-income">
+              <div id="incomeCategoryList"><div class="skeleton skeleton-row"></div></div>
+            </div>
+            <div class="cat-content" id="cat-expense">
+              <div id="expenseCategoryList"><div class="skeleton skeleton-row"></div></div>
+            </div>
+            <!-- Add Category Form -->
+            <div id="addCategoryForm" style="display:none; margin-top:1rem; padding-top:1rem; border-top: 1px solid var(--border);">
+              <div class="form-group">
+                <label class="form-label">Category Name</label>
+                <input type="text" id="newCategoryName" class="form-control" placeholder="e.g. Groceries">
+              </div>
+              <p class="text-muted mb-2" style="font-size:0.875rem;">Type: <strong id="newCategoryType">income</strong></p>
+              <div class="d-flex gap-1">
+                <button class="btn btn-primary" id="saveCategoryBtn">Add Category</button>
+                <button class="btn btn-outline" id="cancelCategoryBtn">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/profile.js"></script>
+</body>
+</html>

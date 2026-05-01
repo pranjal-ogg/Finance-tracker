@@ -1,0 +1,51 @@
+.card { background-color: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.card-title { font-size: 1.125rem; font-weight: 600; color: var(--text); }
+
+.btn { padding: 0.5rem 1rem; border-radius: 6px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.875rem; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary { background-color: var(--primary); color: white; }
+.btn-primary:hover:not(:disabled) { background-color: #5A52D5; }
+.btn-outline { background-color: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover:not(:disabled) { background-color: var(--bg); }
+.btn-danger { background-color: var(--danger); color: white; }
+
+.form-group { margin-bottom: 1rem; }
+.form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.875rem; }
+.form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background-color: var(--bg); color: var(--text); font-size: 1rem; }
+.form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1); }
+
+.table-container { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+.table th { font-weight: 600; color: var(--muted); font-size: 0.875rem; background-color: var(--bg); }
+
+.badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+.badge-income { background-color: rgba(34, 197, 94, 0.1); color: var(--success); }
+.badge-expense { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.spinner { border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; width: 1.25rem; height: 1.25rem; animation: spin 0.8s linear infinite; }
+.spinner-dark { border-color: var(--border); border-top-color: var(--primary); }
+
+@keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+.skeleton { background: #f6f7f8; background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%); background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 1.5s linear infinite forwards; border-radius: 4px; }
+.skeleton-card { height: 120px; width: 100%; border-radius: var(--radius); }
+.skeleton-row { height: 40px; margin-bottom: 10px; width: 100%; }
+
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal { background: var(--card); border-radius: var(--radius); width: 90%; max-width: 500px; transform: translateY(-20px); transition: transform 0.3s ease; box-shadow: var(--shadow); max-height: 90vh; display: flex; flex-direction: column; }
+.modal-overlay.active .modal { transform: translateY(0); }
+.modal-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.modal-body { padding: 1.5rem; overflow-y: auto; }
+.modal-footer { padding: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 1rem; }
+.close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--muted); }
+
+#toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { padding: 1rem 1.5rem; border-radius: 8px; color: white; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow); transform: translateX(120%); transition: transform 0.3s ease, opacity 0.3s ease; font-weight: 500; font-size: 0.875rem; }
+.toast.show { transform: translateX(0); }
+.toast-success { background-color: var(--success); }
+.toast-error { background-color: var(--danger); }
+.toast-warning { background-color: var(--warning); }
+.toast.hiding { opacity: 0; }

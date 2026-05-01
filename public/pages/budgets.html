@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budgets - FinTrack</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .budget-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .budget-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; }
+    .budget-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .progress-bar-wrap { height: 10px; background: var(--bg); border-radius: 5px; overflow: hidden; margin: 0.75rem 0; border: 1px solid var(--border); }
+    .progress-bar-fill { height: 100%; border-radius: 5px; transition: width 1s ease-in-out; }
+    .summary-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .summary-item { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.25rem; text-align: center; }
+    .empty-state { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+    .empty-state i { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+    .action-btn { background: none; border: none; cursor: pointer; padding: 0.25rem 0.5rem; border-radius: 4px; transition: background 0.2s; font-size: 1rem; }
+    .action-btn:hover { background: var(--bg); }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <main class="main-content">
+      <header class="top-header">
+        <div class="d-flex align-center gap-2">
+          <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
+          <h2 style="font-size: 1.25rem;">Budgets</h2>
+        </div>
+        <div class="d-flex align-center gap-2">
+          <input type="month" id="monthPicker" class="form-control" style="width: auto;">
+          <button class="btn btn-primary" id="addBudgetBtn"><i class="fa-solid fa-plus"></i> Add Budget</button>
+        </div>
+      </header>
+
+      <div class="content-area">
+        <div id="budgetGrid" class="budget-grid">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+
+        <!-- Summary Row -->
+        <div class="summary-row" id="budgetSummary" style="display:none;">
+          <div class="summary-item">
+            <div class="text-muted mb-1" style="font-size:0.875rem;">Total Budgeted</div>
+            <div id="totalBudgeted" class="font-weight-bold" style="font-size:1.5rem;"></div>
+          </div>
+          <div class="summary-item">
+            <div class="text-muted mb-1" style="font-size:0.875rem;">Total Spent</div>
+            <div id="totalSpent" class="font-weight-bold" style="font-size:1.5rem;"></div>
+          </div>
+          <div class="summary-item">
+            <div class="text-muted mb-1" style="font-size:0.875rem;">Categories Exceeded</div>
+            <div id="categoriesExceeded" class="font-weight-bold text-danger" style="font-size:1.5rem;"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Budget Modal -->
+  <div class="modal-overlay" id="budgetModal">
+    <div class="modal" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 id="budgetModalTitle">Add Budget</h3>
+        <button class="close-modal" id="closeBudgetModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="budgetForm">
+          <div class="form-group" id="categoryGroup">
+            <label class="form-label">Category (Expense only)</label>
+            <select id="budgetCategory" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Budget Limit</label>
+            <input type="number" id="budgetLimit" class="form-control" step="0.01" min="0.01" required placeholder="e.g. 5000">
+          </div>
+          <div class="form-group" id="monthGroup">
+            <label class="form-label">Month</label>
+            <input type="month" id="budgetMonth" class="form-control" required>
+          </div>
+          <input type="hidden" id="budgetId">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelBudgetBtn">Cancel</button>
+        <button class="btn btn-primary" id="saveBudgetBtn">Save Budget</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/nav.js"></script>
+  <script src="../js/budgets.js"></script>
+</body>
+</html>
