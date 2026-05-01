@@ -1,6 +1,6 @@
 const BASE_URL = window.location.hostname === 'localhost' 
   ? 'http://localhost:5001/api' 
-  : 'https://your-app.onrender.com/api';
+  : 'https://finance-tracker-xp0c.onrender.com/api';
 
 const request = async (endpoint, options = {}) => {
   const token = localStorage.getItem('pft_token');
